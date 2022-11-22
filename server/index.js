@@ -8,8 +8,7 @@ import path from "path";
 import timeout from "connect-timeout";
 import muiltiImagesModal from "./modal/muiltipleImages.js";
 const __dirname = path.resolve();
-const url =
-  "mongodb+srv://bilal:minerdao12345@cluster0.flytvry.mongodb.net/?retryWrites=true&w=majority";
+const url ="";
 const app = express();
 connectDB(url, {
   useNewUrlParser: true,
