@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-
-// const URL = `mongodb+srv://user:admin123@cluster0.ouusdwa.mongodb.net/?retryWrites=true&w=majority`;
 const connectDB = async (url) => {
   await mongoose
     .connect(url, {
