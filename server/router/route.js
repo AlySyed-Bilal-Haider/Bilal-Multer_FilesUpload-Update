@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers } from "../controller/user-controller.js";
+import { getUsers, getuserPaginations } from "../controller/user-controller.js";
 const route = express.Router();
-route.get("/alluser", getUsers);
+route.get("/alluser", getuserPaginations);
 export default route;

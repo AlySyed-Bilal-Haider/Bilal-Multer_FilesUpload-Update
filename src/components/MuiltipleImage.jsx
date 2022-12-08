@@ -12,14 +12,13 @@ function MuiltipleImage() {
   const saveMuiltipleFiles = async () => {
     const formData = new FormData();
     Array.from(files).map((items) => {
-      console.log("items:", items);
       formData.append("files", items);
     });
     try {
       formData.append("email", emailstate);
       formData.append("password", passwordstate);
       const { data } = await axios.post(URL, formData);
-      console.log("data:", data);
+
       data.status == "ok" && alert("add user successfully");
       setMultipleState("");
     } catch (error) {

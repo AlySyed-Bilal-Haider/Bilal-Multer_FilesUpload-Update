@@ -12,12 +12,19 @@ function UserRecord() {
     imgID: "",
   });
 
+  const [totalpages, setTotalpages] = useState("");
   const URL = "http://localhost:8080";
-  const fetchUserRecord = async () => {
+  const limit = 3;
+  /////////////Fetch all record from server side ///////////
+  const fetchUserRecord = async (page = 1) => {
     try {
-      const { data } = await axios.get(`${URL}/alluser`);
+      console.log("page here:", page);
+      const { data } = await axios.get(
+        `${URL}/alluser?page=${page}&limit=${limit}`
+      );
+      console.log("data record:", data);
       setdata(data?.data);
-      console.log("data:", data?.data);
+      setTotalpages(data?.totalPages);
     } catch (error) {
       console.log("user record Error:", error);
     }
@@ -26,14 +33,12 @@ function UserRecord() {
   useEffect(() => {
     fetchUserRecord();
   }, []);
-  // src={`${url}/upload/${alldetailsstate[i]?.user?.img}`}
-
   /////////Update file and user data///////////
   const fetchUpdateuser = (id, specificImg, imgID) => {
     const result = data?.find((items) => {
       return items?._id == id;
     });
-    console.log(specificImg);
+
     setFilterState({
       ...filterResult,
       _id: result?._id,
@@ -43,7 +48,17 @@ function UserRecord() {
     });
     setOpenstate(true);
   };
-  console.log("filterResult:", filterResult);
+  ////////////Pagination here////////
+
+  let menuItems = [];
+  for (var i = 1; i <= totalpages; i++) {
+    menuItems.push(<a>{i}</a>);
+  }
+
+  const paginationsHandles = (pages) => {
+    console.log("pages:", pages);
+    fetchUserRecord(pages);
+  };
   return (
     <>
       <Editeprofile open={open} func={setOpenstate} userInfo={filterResult} />
@@ -52,6 +67,7 @@ function UserRecord() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          flexDirection: "column",
         }}
       >
         <table>
@@ -75,7 +91,6 @@ function UserRecord() {
                     >
                       {React.Children.toArray(
                         image?.map((items) => {
-                          console.log("img:", items?.img);
                           return (
                             <div>
                               <img
@@ -103,6 +118,25 @@ function UserRecord() {
             })
           )}
         </table>
+        <br />
+        <div className="pagination">
+          <a href="#">&laquo;</a>
+          {menuItems?.length > 0 &&
+            menuItems.map((items, index) => {
+              return (
+                <a
+                  style={{ cursor: "pointer" }}
+                  key={index}
+                  onClick={() => {
+                    paginationsHandles(index + 1);
+                  }}
+                >
+                  {index + 1}
+                </a>
+              );
+            })}
+          <a href="#">&raquo;</a>
+        </div>
       </div>
     </>
   );
